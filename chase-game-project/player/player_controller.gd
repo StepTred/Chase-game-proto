@@ -2,8 +2,11 @@ class_name PlayerController
 extends CharacterBody3D
 
 @export_group("Movement")
-@export var move_speed: float = 6.0
-@export var turn_speed: float = 10.0
+@export var max_speed: float = 8.0
+@export var acceleration: float = 40.0
+@export var deceleration: float = 50.0
+@export var air_control_multiplier: float = 0.35
+@export var turn_speed: float = 12.0
 
 @export_group("Jumping")
 @export var jump_velocity: float = 6.0
@@ -21,14 +24,16 @@ func _physics_process(delta: float) -> void:
 
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction: Vector3 = camera_pivot.get_movement_direction(input_dir)
+	var target_velocity: Vector3 = direction * max_speed
+	var rate: float = acceleration if direction.length() > 0.0 else deceleration
+	if not is_on_floor():
+		rate *= air_control_multiplier
+
+	velocity.x = move_toward(velocity.x, target_velocity.x, rate * delta)
+	velocity.z = move_toward(velocity.z, target_velocity.z, rate * delta)
 
 	if direction.length() > 0.0:
-		velocity.x = direction.x * move_speed
-		velocity.z = direction.z * move_speed
 		face_direction(direction, delta)
-	else:
-		velocity.x = 0.0
-		velocity.z = 0.0
 
 	move_and_slide()
 
