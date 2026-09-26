@@ -12,14 +12,14 @@ func _ready() -> void:
 
 	for child in get_children():
 		if child is State:
-			var state: State = child
+			var state: State = child as State
 			state.player = player
 			state.state_machine = self
 			state.transition_requested.connect(_on_transition_requested)
 			_states[state.name] = state
 
 	if get_child_count() > 0:
-		current_state = get_child(0)
+		current_state = get_child(0) as State
 		current_state.enter()
 
 

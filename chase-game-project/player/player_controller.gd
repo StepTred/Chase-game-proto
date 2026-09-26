@@ -45,8 +45,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func apply_gravity(delta: float) -> void:
-	var scale: float = rise_gravity_scale if velocity.y > 0.0 else fall_gravity_scale
-	velocity.y -= base_gravity * scale * delta
+	var gravity_scale: float = rise_gravity_scale if velocity.y > 0.0 else fall_gravity_scale
+	velocity.y -= base_gravity * gravity_scale * delta
 
 
 func move_horizontal(delta: float) -> void:
