@@ -17,6 +17,7 @@ extends CharacterBody3D
 @export var coyote_time: float = 0.12
 @export var jump_buffer_time: float = 0.12
 
+@onready var visual: Node3D = $Visual
 @onready var camera_pivot: CameraController = $CameraPivot
 @onready var state_machine: StateMachine = $StateMachine
 
@@ -64,7 +65,7 @@ func move_horizontal(delta: float) -> void:
 
 func face_direction(delta: float) -> void:
 	var target_angle: float = atan2(input_direction.x, input_direction.z)
-	rotation.y = lerp_angle(rotation.y, target_angle, turn_speed * delta)
+	visual.rotation.y = lerp_angle(visual.rotation.y, target_angle, turn_speed * delta)
 
 
 func has_buffered_jump() -> bool:
